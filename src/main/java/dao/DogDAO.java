@@ -113,24 +113,35 @@ public class DogDAO {
 	
 	public int insertDog(Dog dog) {
 		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
 		int insertCount = 0;
 		String sql = "";
+		String sql2 = "SELECT COUNT(*) FROM cloth";
 		
 		try {
-			sql = "INSERT INTO cloth VALUES(cloth_seq.nextval, ?, ?, ?, ?, ?, ?)";
+			sql = "INSERT INTO cloth VALUES(?, ?, ?, ?, ?, ?, ?)";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, dog.getName());
-			pstmt.setInt(2, dog.getPrice());
-			pstmt.setString(3, dog.getImage());
-			pstmt.setString(4, dog.getC_size());
-			pstmt.setString(5, dog.getContent());
-			pstmt.setInt(6, dog.getReadcount());
+			pstmt2 = con.prepareStatement(sql2);
+			rs = pstmt2.executeQuery();
+			rs.next();
+			int count = rs.getInt(1);
+			
+			pstmt.setInt(1, count+1);
+			pstmt.setString(2, dog.getName());
+			pstmt.setInt(3, dog.getPrice());
+			pstmt.setString(4, dog.getImage());
+			pstmt.setString(5, dog.getC_size());
+			pstmt.setString(6, dog.getContent());
+			pstmt.setInt(7, dog.getReadcount());
 			
 			insertCount = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			close(pstmt);
+			close(pstmt2);
+			close(rs);
 		}
 		
 		return insertCount;

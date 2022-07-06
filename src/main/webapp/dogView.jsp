@@ -51,7 +51,7 @@
 		
 		<section id="content_main">
 			<section id="content_left">
-				<img src="images/${dog.iamge }">
+				<img src="images/${dog.image }">
 			</section>
 			<section id="content_right">
 				<b>상품명: </b> ${dog.name }<br>
